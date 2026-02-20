@@ -1,0 +1,74 @@
+package test;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+//CompletableFuture
+
+
+
+public class Program{
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> {
+			try {
+				Thread.sleep(5000);
+				System.out.println("Worker Thread");
+			}catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			return "OK";
+		}).thenApply((x) -> x+x);
+		
+		System.out.println(f1.get());
+		System.out.println("Main");
+	}
+	
+	public static void main2(String[] args) {
+		CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> {
+			try {
+				Thread.sleep(5000);
+				System.out.println("Worker Thread");
+			}catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			return "OK";
+		});
+		
+		CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> {
+			try {
+				Thread.sleep(5000);
+				System.out.println("Worker Thread");
+			}catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			return "OK";
+		});
+		
+		CompletableFuture<Void> f = CompletableFuture.allOf(f1,f2);
+		f.join();
+		System.out.println("Main");
+	}
+	
+	public static void main1(String[] args) {
+		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() ->{
+			try {
+				Thread.sleep(5000);
+				System.out.println("Worker Thread");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return "OK";
+		});
+		
+		String s = null;
+		//s = completableFuture.getNow("No");
+		try {
+			s = completableFuture.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		System.out.println(s);
+		System.out.println("Main");
+	}
+}

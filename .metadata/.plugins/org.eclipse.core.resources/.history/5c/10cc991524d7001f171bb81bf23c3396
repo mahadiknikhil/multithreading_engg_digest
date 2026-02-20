@@ -1,0 +1,36 @@
+package test2;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+//CountDownLatech
+
+class DependentService implements Runnable{
+
+	private CountDownLatch latch;
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
+
+public class Program{
+
+	public static void main(String[] args) throws InterruptedException{
+		int numberOfServices = 3;
+		
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfServices);
+		CountDownLatch latch = new CountDownLatch(numberOfServices);
+		executorService.submit(new DependantService(latch));
+		executorService.submit(new DependantService(latch));
+		executorService.submit(new DependantService(latch));
+		latch.await();
+		
+		System.out.println("Main");
+		executorService.shutdown();
+	}
+}

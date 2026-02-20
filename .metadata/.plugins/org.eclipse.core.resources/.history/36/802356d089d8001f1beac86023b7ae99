@@ -1,0 +1,19 @@
+package test;
+
+//Volatile vs Automicity
+
+class SharedResource{
+	private boolean flag = false;
+	
+	public void setFlagTrue() {
+		this.flag = true;
+	}
+}
+
+public class Program{
+	
+	public static void main(String[] args) {
+		
+	}
+	
+}

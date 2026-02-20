@@ -1,0 +1,33 @@
+package test;
+
+//Volatile vs Automicity
+
+class SharedResource{
+	private boolean flag = false;
+	
+	public void setFlagTrue() {
+		this.flag = true;
+	}
+	
+	public void printIfFlagTrue() {
+		while(!flag) {
+			//do nothing
+		}
+		System.out.println("Flag is true !");
+	}
+}
+
+public class Program{
+	
+	public static void main(String[] args) {
+		
+		SharedResource sharedObj = new SharedResource();
+		
+		Thread writerThread = new Thread(() -> sharedObj.printIfFlagTrue());
+		
+		Thread readerThread = new Thread(() -> sharedObj.printIfFlagTrue());
+		
+		readerThread.start();
+	}
+	
+}

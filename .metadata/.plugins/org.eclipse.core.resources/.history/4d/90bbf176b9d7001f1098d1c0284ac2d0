@@ -1,0 +1,30 @@
+package test1;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+//CyclicBarrier
+
+
+
+public class Program{
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		int numberOfServices = 3;
+		
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfServices);
+		
+		CyclicBarrier barrier = new CyclicBarrier(numberOfServices);
+		
+		executorService.submit(new DependantService(barrier));
+		executorService.submit(new DependantService(barrier));
+		executorService.submit(new DependantService(barrier));
+		
+		System.out.println("Main");
+		executorService.shutdown();
+		barrier.reset();
+	}
+}
